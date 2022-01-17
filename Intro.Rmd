@@ -68,7 +68,7 @@ rm(list = ls())
 ```{r}
 fahrenheit_a_celcius <- function(temp_F){
   temp_C <-(temp_F - 32)*5/9
-  return(temp_C, co)
+  return(temp_C)
 }
 cel <- fahrenheit_a_celcius(90)
 
@@ -76,6 +76,58 @@ cel
 
 
 
+
+
 ```
 
+  ## Ejercicio 
+  calcular la mnultiplicación de dos raices cuadradas
+  
+```{r}
+prim_ej <- function(n,m){
+  return( sqrt(n)*sqrt(m))
+}
+
+prim_ej(2,3)
+
+err_ej <- function(my_vec){
+  err_est <- sqrt(sd(my_vec)/length(my_vec))
+  return(err_est)
+}
+
+err_ej(c(1,2,3,4,5))
+
+sum_ej <- function(my_vec){
+ my_vec <- my_vec + 1
+  return(my_vec)
+}
+
+sum_ej(c(0))
+
+
+```
+  
+  Calcular el error estándar de la media (desviación standar/ raíz cuadrada de n )
+  
+  Sumar 1 a los valores de un vector y despues calcular el logaritmo natural 
+  
+  
+  
+  
+  
+  # Estructura de un script 
+  
+
+```{r}
+rm(list = ls())   #Limpiar la memoria 
+setwd("~/Documents/R-Course/R-Intersemestral")
+
+
+```
+  
+
+  
+  
+  
+  
   
