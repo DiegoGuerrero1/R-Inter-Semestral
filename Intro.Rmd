@@ -124,10 +124,21 @@ setwd("~/Documents/R-Course/R-Intersemestral")
 
 
 ```
-  
+# Ejercicio serio 
 
-  
-  
+```{r}
+iris <- read.csv("iris.csv")
+str(iris)
+iris$Petal.Length <- 
+iris[ ,4]
+
+
+iris<-iris[ , -1] #Quitar columna 
+iris$fecha <- "2022-01-17"#Añadir columna
+iris
+
+```
+
   
   
   
