@@ -137,8 +137,71 @@ iris<-iris[ , -1] #Quitar columna
 iris$fecha <- "2022-01-17"#Añadir columna
 iris
 
+
+
 ```
 
+  # Operadores relacionales
+  
+  Los de siempre
+  
+  
+```{r}
+iris
+iris_set <-iris[iris$Species == "setosa", ]
+iris_set
+```
+  
+```{r}
+iris$Species
+str(iris)
+levels(iris$Species)
+
+iris_set <-iris[iris$Sepal.Width>=3,]
+
+iris_set <- iris[iris$Species != "setosa",]
+iris_set
+
+iris_set <- iris[iris$Sepal.Width >= 3 & iris$Sepal.Width >= 2,]
+iris_set
+
+#En función de y~x 
+
+
+```
+  # Ejercicio 
+```{r}
+
+
+names(iris)
+names(iris)<-c("Longitud.Sepalo", "Ancho.Sepalo", "Longitud.Petalo","Ancho.Petalo","Especie","Fecha")
+
+names(iris)[4]
+
+row.names(iris)[1]<-"a"
+row.names(iris)
+
+#CAlcular el numero de elementos por categoría 
+table(iris$Especie)
+```
+
+  
+  # Graficas básicas 
+```{r}
+hist(iris$Longitud.Sepalo) #Histograma
+#plot(iris) # Hacer un plot de toda la tabla 
+iris
+dotchart(iris$Longitud.Petalo, groups = as.factor(iris$Especie)) #Como se comportan las especies respecto a la longitud del petalo 
+
+plot(x = iris$Longitud.Sepalo, y = iris$Ancho.Sepalo)
+plot(x = iris$Longitud.Sepalo, y = iris$Ancho.Sepalo,col=iris$Especie)
+plot(x = iris$Longitud.Sepalo, y = iris$Ancho.Sepalo,col=iris$Especie, xlab = "Longitud del sépalo(cm)",ylab = "Ancho del sépalo (cm)")
+```
+  
+  
+  
+  
+  
   
   
   

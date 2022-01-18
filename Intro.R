@@ -11,10 +11,10 @@
 
 # Símbolos
 
-El igual va para ambos lados. La dirección a veces es importante 
+#El igual va para ambos lados. La dirección a veces es importante 
 # Objetos 
-- Vector: 
-  Estructura más sencilla de datos. Una clección de deatos del mismo tipo. 
+#- Vector: 
+ # Estructura más sencilla de datos. Una clección de deatos del mismo tipo. 
 
 x <- c(1,2,3,4,5)
 y <- c("Diego", "Gabo", "Rorigo", "Liz")
@@ -29,24 +29,23 @@ z
 
 
 
-```{r}
 mat <- matrix(1:9, nrow = 3, ncol = 3)
 mat
 
 
 # Dataframes
-Diferentes tipos de datos 
+#Diferentes tipos de datos 
 
 
 db <- data.frame(id = letters[1:10], x = 1:10, y = 11:20)
 View(db)
 
 
-EL abmiente R es una lista, hay que borrar el ambiente 
+#EL abmiente R es una lista, hay que borrar el ambiente 
 
 
 rm(list = ls())
-```
+
 
 # Crear una funión 
 
@@ -62,8 +61,6 @@ cel
 
 
 
-
-```
 
 ## Ejercicio 
 calcular la mnultiplicación de dos raices cuadradas
@@ -104,8 +101,6 @@ Sumar 1 a los valores de un vector y despues calcular el logaritmo natural
 rm(list = ls())   #Limpiar la memoria 
 setwd("~/Documents/R-Course/R-Intersemestral")
 
-
-```
 # Ejercicio serio 
 
 iris <- read.csv("iris.csv")
@@ -122,7 +117,7 @@ iris
 
 # Operadores relacionales
 
-Los de siempre
+
 
 
 
@@ -201,7 +196,7 @@ View(wage)
 wage_wx <-wage[ ,-1]
 names(wage_wx)
 
-wage_wx <- wage_wx[wage_wx$wage< 280, ]
+wage_wx <- wage_wx[wage_wx$wage<= 280, ]
 
 summary(wage_wx)
 wage_wx$education <- as.factor(wage_wx$education)

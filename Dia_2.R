@@ -109,4 +109,137 @@ visualize.norm(mu = median(cars.db$speed), sd = sd(cars.db$speed), stat = 20, se
 
 ?visualize
 
+## Estandarización de datos 
+
+#Restar la media y dividir entre la desviación 
+
+### ejercicio 7
+
+cars.db$dist.estandar <- (cars.db$dist - mean(cars.db$dist))/sd(cars.db$dist)
+
+hist(cars.db$dist.estandar)
+
+plot(density(cars.db$dist.estandar))
+plot(density(cars.db$dist))
+
+hist(cars.db$dist)
+
+### ejercicio 8: Distribución exponencial
+
+lluvia.db <- read.csv("lluvia.csv")
+str(lluvia.db)
+
+hist(lluvia.db$mm.lluvia)
+
+fitdistr(lluvia.db$mm.lluvia, densfun = "exponential")
+?fitdistr
+str(lluvia.db)
+summary(lluvia.db)
+lluvia.db$mm.lluvia.norm <- lluvia.db$mm.lluvia*100
+
+visualize.exp(theta = as.numeric(lluvia.db$mm.lluvia),stat = 3.0,section = "upper" ) #checar
+?visualize.exp
+
+#Correlaciones 
+
+#Usamos covarianza para la correlacion 
+cov(cars.db$dist, cars$speed)
+cor(cars.db$dist, cars$speed) #Una relacion 1:1 es perfecta, a medida que se acerca al 1 es alta. 
+
+#Otras db 
+
+
+cor(iris.db[1:4])
+
+plot(iris.db$Petal.Length, iris.db$X)
+
+cor(mtcars.db[c(1,4,6)])
+
+
+## Ejercicio 9 
+
+adv.db <- read.csv("advertising.csv")
+
+str(adv.db)
+
+cor(adv.db)
+
+plot(x = adv.db$TV, y = adv.db$Sales)
+
+plot(x = adv.db$Newspaper, y = adv.db$Sales)
+
+#Regresion lineal 
+
+#Bo = venta cero (intercepto)
+#Pendiente de la variable 
+
+adv.lm <- lm(adv.db$Sales~adv.db$TV)
+
+#Ventas = 6.97 + 0.5546*TV + error
+
+summary(adv.lm)
+
+plot(adv.db$Sales~adv.db$TV)+
+  abline(a = 6.97, b = 0.05546, col = "red")+
+  text(x = 20, y = 25, "r² = 0.8112 ", cex = 0.7) #81% es explicado por el modelo 
+
+# r^2 = sqrt(cor(adv.db$Sales, adv.db$TV)) 
+
+#Ejercicio 10 
+
+## Símbolos (pch=n, con 0 <= n =< 25) Líneas (lty = n)
+
+plot(adv.db$Sales~adv.db$TV, pch = 4)+
+  abline(a = 6.97, b = 0.05546, col = "blue", lty = 2)+
+  text(x = 20, y = 25, "r² = 0.8112 ", cex = 0.7)
+
+#Agregar leyendas 
+
+plot(adv.db$Sales~adv.db$TV, pch = 4)+
+  abline(a = 6.97, b = 0.05546, col = "blue", lty = 2)+
+  text(x = 20, y = 25, "r² = 0.8112 ", cex = 0.7)
+
+
+#Ejercicio 11
+str(iris.db)
+iris.db$Species <- as.factor(iris.db$Species)
+iris$Species <- as.factor(iris$Species)
+
+lm.setosa <- lm(iris.db[iris.db$Species == "setosa", ]$Petal.Length ~ iris.db[iris.db$Species == "sepalo", ]$Petal.Width )
+
+str(iris.db)
+
+iris.setosa <- iris[iris$Species == "setosa", ]
+iris.versicolor <- iris[iris$Species == "versicolor", ]
+iris.virginica <- iris[iris$Species == "virginica", ]
+
+#Opción 2: Generar una función
+
+lm.by.specie <- function(database, specie){
+  database.rec <- database[database$Species == specie, ]
+  lm.specie <- lm(database.rec$Petal.Length~database.rec$Petal.Width)
+  return(lm.specie)
+}
+
+lm.setosa <- lm(iris.setosa$Petal.Length~iris.setosa$Petal.Width)
+lm.setosa
+
+lm.by.specie(iris, "setosa")
+
+lm.versicolor <-lm.by.specie(iris, "versicolor")
+lm.versicolor
+
+lm.virginica <- lm.by.specie(iris, "virginica")
+lm.virginica 
+
+plot(iris.db$Petal.Length~iris.db$Petal.Width, col = iris.db$Species)+ 
+  abline(a = 1.3276, b = 0.5465, col = "black", lty = 2)+
+  abline(a = 1.781, b=1.869,col = "red", lty = 3)+
+  abline(a = 4.2407, b = 0.6473, col = "green", lty = 3)
+  
+
+iris_sepalo <- iris[iris$Ancho.Sepalo >= 2.5, ]
+
+
+
 
