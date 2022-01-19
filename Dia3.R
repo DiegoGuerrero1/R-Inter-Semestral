@@ -109,3 +109,81 @@ tapply(animal.db$Examinateur1, animal.db$Animal, mean, na.rm = T)
 
 tapply(animal.db$Examinateur1, list(animal.db$Animal, animal.db$Methode), mean, na.rm = T)
 
+
+# FORMATOS DE DATAFRAMES 
+
+library(reshape2)
+
+
+
+animal.melt <- melt(animal.db[ ,-8], id.vars = c("Animal", "Methode")) #Conservamos las variables Animal y Methode, se crea una columan para el examinador 
+
+names(animal.melt)[3] <- "Examinador"
+names(animal.melt)
+#Crear promedio de cada exmainador por tipo de animal 
+
+str(animal.melt)
+animal.melt$value <- as.numeric(animal.melt$value)
+
+
+
+
+
+
+tapply(animal.melt$value, animal.melt$Examinador, mean, na.rm=TRUE)
+
+tapply(animal.melt$value, list(animal.melt$Examinador, animal.melt$Animal),mean, na.rm = TRUE)
+
+tapply(animal.melt$value, list(animal.melt$Examinador, animal.melt$Animal, animal.melt$Methode), mean , na.rm = TRUE)
+
+plot(animal.melt$value ~ animal.melt$Examinador)
+
+
+
+## Ejercicio 3: 
+
+calabazas.db <- read.csv("calabazas.csv")
+
+str(calabazas.db)
+
+
+#Crear promedio de cada vitamina C para cafa una de las variedades para cada fecha 
+tapply(calabazas.db$VitC, list(calabazas.db$Cult, calabazas.db$Date), sd , ra.nm = TRUE)
+
+
+airq.db <- read.csv2("airquality.csv")
+str(airq.db)
+airq.db$Wind <- as.numeric(airq.db$Wind)
+
+#Transformar a formato largo conservando el mes y el día como columnas 
+
+airq.melt <- melt(airq.db, id.vars = c("Month", "Day"))
+str(airq.melt)
+
+#Sacar el promeido de cada mes para cada una de las variables atmosféricas 
+
+tapply(airq.melt$value, list(airq.melt$variable,airq.melt$Month), mean, na.rm =TRUE) 
+
+
+
+
+## ejercicio Extra 
+
+#Cargar datos de advertising2.csv
+
+adv2.db <- read.csv2("advertising2.csv")
+adv2.db
+
+str(adv2.db)
+
+#transformar a formato largo dejando fijas store y sales 
+
+
+adv2.melt <- melt(adv2.db, id.vars = c("Store","Sales"))
+str(adv2.melt)
+adv2.melt$Sales <- as.numeric(adv2.melt$Sales)
+adv2.melt$value <- as.numeric(adv2.melt$value)
+adv2.melt$Store <- as.factor(adv2.melt$Store)
+
+plot(adv2.melt$Sales~adv2.melt$value, col = adv2.melt$variable)
+
