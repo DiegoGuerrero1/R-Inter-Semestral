@@ -2,11 +2,6 @@
 
 ## ¿Qué es R?
 
-- Lenguaje de programación basado el lenguaje *S*
-  - Software de visualiación 
-- Ambiente de trabajo 
--     Abro un espacio para crear objetos. 
-- Distribuido, mantenido por **R Development core Team* con sede en el Instituto de estadística y Matemáticas de la Universidad de Viena. 
 
 
 # Símbolos
@@ -63,7 +58,7 @@ cel
 
 
 ## Ejercicio 
-calcular la mnultiplicación de dos raices cuadradas
+
 
 prim_ej <- function(n,m){
   return( sqrt(n)*sqrt(m))
@@ -87,9 +82,7 @@ sum_ej(c(0))
 
 
 
-Calcular el error estándar de la media (desviación standar/ raíz cuadrada de n )
 
-Sumar 1 a los valores de un vector y despues calcular el logaritmo natural 
 
 
 

@@ -233,7 +233,7 @@ lm.virginica <- lm.by.specie(iris, "virginica")
 lm.virginica 
 
 plot(iris.db$Petal.Length~iris.db$Petal.Width, col = iris.db$Species)+ 
-  abline(a = 1.3276, b = 0.5465, col = "black", lty = 2)+
+  abline(a = lm.setosa$coefficients[1], b = lm.setosa$coefficients[2], col = "black", lty = 2)+
   abline(a = 1.781, b=1.869,col = "red", lty = 3)+
   abline(a = 4.2407, b = 0.6473, col = "green", lty = 3)
   
