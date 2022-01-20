@@ -46,7 +46,8 @@ ggplot(data= mpg.db, aes(x = cilindros, y = autopista))+
 
 #El de cuatro cilindros es más eficiente, da más millas por galón. 
 conv <-c(2,6,7,8,11,12)
-mpg.db[ ,conv] <- as.factor(mpg.db[ ,conv])
+
+mpg.db[ ,conv]
 ```
 
 ## Ejercicios 
@@ -77,7 +78,7 @@ ggplot(data = mpg.db, mapping = aes(desplazamiento, autopista, color = tipo))+
 ```{r}
 ggplot(data = mpg.db, aes(desplazamiento, autopista, size = tipo))+
   geom_point()
-```9
+```
 
 ```{r}
 ggplot(data = mpg.db, aes(desplazamiento, autopista, size = tipo, color = transmision))+
@@ -93,7 +94,7 @@ ggplot(data = mpg.db, aes(desplazamiento, autopista, color = tipo, shape = trans
 
 conv <-c(2,6,7,8,11,12)
 
-mpg.db$tipo <- as.factor(mpg.db$tipo)
+mpg.db$combustible <- as.factor(mpg.db$combustible)
 
 ggplot(data = mpg.db, aes(desplazamiento, autopista, color = desplazamiento < 5, shape = ))+
   geom_point()
@@ -165,9 +166,126 @@ ggplot(data = mpg.db)+
 iris.db$Species <- as.factor(iris$Species)
 
 ggplot(data = iris.db)+
-  geom_point(aes(x = Sepal.Length, Petal.Length))+
+  geom_point(aes(x = Sepal.Length, Petal.Length, color = Species))+
   facet_grid(.~Species)
 
 ```
+# Gráficos de línea 
+DataHub
+
+```{r}
+temp.db <- read.csv("temp.csv")
+
+temp.db$Source <- as.factor(temp.db$Source)
+ggplot(data = temp.db)+
+  geom_line(aes(x = Year, y=Mean, color = Source))+
+  labs(title = "Temperatura media de 1880 a 2016", x = "Año", y="Temperatura (°C)")
+
+```S
+```{r}
+ggplot(data = temp.db)+
+  geom_line(aes(x = Year, y=Mean, color = Source))+
+  labs(title = "Temperatura media de 1880 a 2016", x = "Año", y="Temperatura (°C)")+
+  facet_wrap(.~Source)
+```
+## Regresiones 
+
+Se pueden ajustar datos a regresiones lineales o polinomiales 
+
+```{r}
+ggplot(mpg.db, aes(x = desplazamiento, y = autopistakm))+
+  geom_point()+
+  geom_smooth(method = "lm")
+```
+
+
+### Regresiones polinomiales 
+
+```{r}
+ggplot(mpg.db, aes(x = desplazamiento, y = autopistakm))+
+  geom_point(aes(x = desplazamiento, y = autopistakm, color = cilindros, shape = tracción, alpha = transmision))+
+  geom_smooth()+ 
+  geom_smooth(method = "lm", color = "orange")
+  
+# Si no especificamos el método, selecciona el mejor. 
+
+```
+
+
+```{r}
+#Juntamos las ods con una faceta 
+ggplot(data = mpg.db)+
+  geom_smooth(mapping = aes(x = desplazamiento, y = autopista))+ 
+  geom_smooth()
+
+```
+
+```{r}
+ggplot(data = mpg.db, mapping = aes(x = desplazamiento, y =autopistakm, color = tipo))+ 
+  geom_smooth()+
+  geom_point()+
+  
+```
+```{r}
+
+names(mpg.db)[-3] <- "c"
+ggplot(data = mpg.db)+ 
+  geom_smooth(se = T,  mapping = aes(x = desplazamiento, y =autopistakm, color = tipo))+
+  geom_point( aes(x = desplazamiento, y =autopistakm, shape = combuatible))+
+facet_wrap(.~tipo)
+```
+```{r}
+ggplot(mpg.db, aes(x = desplazamiento, y = autopistakm))+
+  geom_point(aes(x = desplazamiento, y = autopistakm, color = cilindros, shape = tracción, alpha = transmision))+
+  geom_smooth()+ 
+  labs(
+    
+    title = "Fuel efficiency generally decreases with engine size",
+    subtitle = "Two seaters (sport cars) are an exception because of their light weight"
+  )
+  
+```
+```{r}
+casting <- function(db, column){
+  db$column <- as.factor(db$column)
+}
+
+casting(mpg, "fabricante")
+
+```
+
+
+```{r}
+ggplot(data = mpg.db, aes(x = tipo, y = autopista,fill = tipo))+
+  geom_boxplot(notch = TRUE)+
+  geom_jitter(aes(color = tipo), alpha = 0.8)
+```
+
+# Subconjuntos - Tibble
+
+Dataframes no sirven por datos masivos (miles, millones), muy lentos. Para eso se usan los tibbles. Funcionan de la misma manera. 
+
+```{r}
+library(tidyverse)
+
+mpg.tb <- as_tibble(mpg.db)
+
+pickup <- mpg.tb %>% filter(tipo == "pickup")
+str(mpg.tb)
+```
+
+### Ejercicio 8
+Se deberá generar un boxplot de los automóviles compactos comparando la marca del auto (fabricante) vs el consumo de combistible en la ciudad. 
+ - Utilice la geometría de jitter para observar la varianza 
+ - Utilice muestras para conocer la distribución de los datos. 
+ 
+```{r}
+compact <- mpg.tb %>% filter(tipo == "compact")
+  ggplot(compact, aes(x = fabricante, y = ciudadkm/desplazamiento, fill = fabricante))+
+  geom_boxplot(notch = TRUE)+
+  geom_jitter( shape = 0.8)
+  
+```
+
 
 
