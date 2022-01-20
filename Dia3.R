@@ -164,7 +164,7 @@ str(airq.melt)
 
 tapply(airq.melt$value, list(airq.melt$variable,airq.melt$Month), mean, na.rm =TRUE) 
 
-
+#HAzlo de uno nadamas, del que sea nomás para probar que ta pasando elije ell que quiersa baboso
 
 
 ## ejercicio Extra 

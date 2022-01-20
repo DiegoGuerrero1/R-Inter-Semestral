@@ -1,0 +1,173 @@
+---
+title: "Dia4"
+author: "Diego Guerrero"
+date: "1/20/2022"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+rm(list = ls()) #limpiamos entorno 
+setwd("~/Documents/R-Course/R-Intersemestral")
+#llamamos a la librería 
+library(ggplot2)
+#cargamos los datos 
+mpg.db <- read.csv("dia4/mpg.csv")
+
+str(mpg.db)
+
+?mpg
+
+
+#Plantilla:
+#gpglot(data=<DATA>)+
+#<GEOM_FUNCTION>(mapping = aes(<MAPPINGS>)) 
+ggplot(data = mpg.db, aes(x = displ, y = hwy))+
+  geom_point()
+
+ggplot(data = mpg.db, aes(x = displ, y = cty))+
+  geom_point()
+
+#### Ejercicio 1 
+# 1. Traducir títulos del data frame 
+
+names(mpg.db)<- c("x", "fabricante", "modelo", "desplazamiento", "año", "cilindros", "transmision", "tracción","ciudad","autopista","combustible","tipo")
+names(mpg.db)
+str(mpg.db)
+
+
+#2. Crear una gráfica de dispersión de cilindros vs autopista
+# Autopista = millas por galón , cilindros = número de cilindros 
+ggplot(data= mpg.db, aes(x = cilindros, y = autopista))+
+  geom_point()
+
+#El de cuatro cilindros es más eficiente, da más millas por galón. 
+conv <-c(2,6,7,8,11,12)
+mpg.db[ ,conv] <- as.factor(mpg.db[ ,conv])
+```
+
+## Ejercicios 
+
+```{r}
+
+# 3. Gráfica de dispersión de grabricante vs autopista
+ggplot(data= mpg.db, aes(x = fabricante, y = autopista))+
+  geom_point()
+
+
+```
+```{r}
+
+#4. Crear una gráfica tipo vs transmisión 
+
+ggplot(data = mpg.db, aes(tipo, autopista))+
+  geom_point()
+```
+# Estéticas 
+
+Elementos para incluir. Tamaños, colores, formas. Agragar propiedades. 
+
+```{r}
+ggplot(data = mpg.db, mapping = aes(desplazamiento, autopista, color = tipo))+
+  geom_point()
+```
+```{r}
+ggplot(data = mpg.db, aes(desplazamiento, autopista, size = tipo))+
+  geom_point()
+```9
+
+```{r}
+ggplot(data = mpg.db, aes(desplazamiento, autopista, size = tipo, color = transmision))+
+  geom_point()
+
+```
+```{r}
+ggplot(data = mpg.db, aes(desplazamiento, autopista, color = tipo, shape = transmision))+
+  geom_point()
+```
+
+```{r}
+
+conv <-c(2,6,7,8,11,12)
+
+mpg.db$tipo <- as.factor(mpg.db$tipo)
+
+ggplot(data = mpg.db, aes(desplazamiento, autopista, color = desplazamiento < 5, shape = ))+
+  geom_point()
+
+#Añadiendo una columna con rebdimiento en kilometros 
+
+mpg.db$ciudadkm <- as.numeric(mpg.db$ciudad)*0.425144/2.352
+
+mpg.db$autopistakm <- as.numeric(mpg.db$autopista)*0.425144/2.352
+
+
+ggplot(data = mpg.db, mapping = aes(desplazamiento, ciudadkm , color = tipo))+
+  geom_point()
+
+ggplot(data = mpg.db, mapping = aes(desplazamiento, autopistakm, color = tipo))+
+  geom_point()
+```
+
+# Facetas 
+
+Separar datos, separar por gráficas diferentes 
+
+```{r}
+#Combinación de dos variables 
+ggplot(data = mpg.db)+
+  geom_point(aes(x = desplazamiento, y = autopista))+ #Más de un componente, tenemos que especificar 
+  facet_grid(cilindros ~ tracción)
+
+```
+```{r}
+
+```
+
+```{r}
+ggplot(data = mpg.db)+
+  geom_point(aes(x = desplazamiento, y = autopista))+ #Más de un componente, tenemos que especificar 
+  facet_wrap(~tipo, nrow = 2) 
+```
+## ejercicio 
+
+Generar gráfico de dispersión  x= longitud del sépalo , Y = longitud del pétalo 
+- generar dos gráficos: Una estética para cada uno 
+- Combimar 2 estéticas en una tercer gráfica 
+
+```{r}
+iris.db <- read.csv("iris.csv")
+ggplot(iris.db, aes(Sepal.Length, Petal.Length ))+
+  geom_point()
+
+#Generar dos gráficos 
+ggplot(iris.db, aes(Sepal.Length, Petal.Length, color = Species ))+
+  geom_point()
+
+ggplot(iris.db, aes(Sepal.Length, Petal.Length, shape = Species,  color = Species ))+
+  geom_point()
+
+```
+
+Utilizar facetas para separar los datos por especie 
+- Al menos una estética
+
+
+
+```{r}
+ggplot(data = mpg.db)+
+  geom_point(aes(x = desplazamiento, y = autopista))+ #Más de un componente, tenemos que especificar 
+  facet_wrap(~tipo, nrow = 2) 
+
+iris.db$Species <- as.factor(iris$Species)
+
+ggplot(data = iris.db)+
+  geom_point(aes(x = Sepal.Length, Petal.Length))+
+  facet_grid(.~Species)
+
+```
+
+
