@@ -8,8 +8,8 @@ output: pdf_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-
-# Ejercicio con covid 
+# Continuación Día 4 
+## Ejercicio con covid 
 1. Leer datos 
 2. Graficar para los países: 
   2.1 México 
@@ -150,6 +150,151 @@ ggsave(filename ="numero_corte.svg",plot = n.vs.cut, width = 32, height = 18, dp
 ```{r}
 carat.plot <- ggplot(data = diam.tb, mapping = aes(x = carat, fill = color), position = "Dodge")+
   geom_histogram()
-ggsave(filename =  "carat.plot.png", plot = carat.plot, width = 320, )
+ggsave(filename =  "carat.plot.png", plot = carat.plot, width = 120, height = 70 , dpi = 600, units = "cm")
+```
+# Temas día 5 
+
+## Modelo mixtos 
+
+modelos individuales no son suficientes para presentar el comportamiento de los datos 
+
+
+Más de un modelo, multiples modelos lineales. 
+
+### Efectos fijos vs aleatorios 
+Efectos fijos: Variables que ya conocemos, relacion entre variables ya establecidos.Ya sabemos como se van a comportar. 
+
+Efectos aleatorios: NO los podemos explicar.
+
+Se deben tener en cuenta estos efectos. Se pueden representar por medio de procesos estocásticos. 
+
+Modelos de efectos mixos: Contemplan los efectos fijos y aleatorios. Más extensos y complejos. Tales como modelos lineales de efectos mixtos. 
+
+**EL efecto fijo no va a cambiar. El aleatorio si cambia **
+
+
+Ejemplos efectos fijos: 
+  Sexo
+  Dificultad
+  Dósis
+
+Ejemplos efectos aleatorios: 
+  Sujetos de prueba 
+  Estímulos 
+  Escenarios
+
+*Efectos anidados:* Variables o propiedades de los sujetos. 
+*Efectos cruzados:* " de varios sujetos.
+
+
+## Selección de modelos 
+$$y_i = \alpha_j+\beta x_i$$
+Iterpolaicones: Unen todos los puntos. 
+Modelos: Describen tendencia. 
+
+
+## Primer caso de estudio 
+
+```{r}
+#De esta forma, separando, se pueden hacer varios modleos y así explicar mejor los datos. 
+sleep.db <- read.csv("sleep.csv")
+ggplot(data = sleep.db,mapping = aes(x = Days, y = Reaction))+ 
+  geom_point()+
+  geom_smooth()+
+  facet_wrap(.~Subject)
+  
+
+```
+
+```{r}
+#Generar un modelo lienal de un sujeto en específico 
+
+model308 <- lm()
+```
+
+# ¿Cómo generar un modelo polinomial para tpdps ñps siketps de prueba?
+```{r}
+library(nlme)
+model2 <- lmList(Reaction ~ Days | Subject, data = sleep.db)
+
+coef.model2 <- coefficients(model2)
+ggplot(coef.model2, aes(x = Days, y = Reaction))+
+  geom_smooth()
+
+```
+
+
+# Caso de estudio 2 : 
+
+Modelos de efectos mixtos. Factores aleatorios. 
+
+```{r}
+rail.db <- Rail
+?Rail
+#Rail: En que riel se hizo la medición 
+#travel: vector numérico con el tiempo de viaje de ondas ultrasónicas de cada riel.
+
+#Hay tiempos de viajes no acepatbles y no aceptables. 
+
+summary(rail.db)
+
+
+
+```
+
+
+Realizar gráfico de dispersión, x = travel, y = Rail
+
+```{r}
+ggplot(data = rail.db, mapping = aes(x=travel, y = Rail, color = Rail ))+
+  geom_point()
+
+
+
+```
+Efecto Riel es fijo entonces:
+$$yi = \beta_i + e_{ij}\\ $$
+
+Ejercicio: 
+1. Generar un modelo lineal (trvel ~ Rail). 
+2. Calcula el coeficiente de correlación y covarianza de ambos variables rail y travel. 
+3. Revisar el modelo con la instrucción summary()
+4. ¿Qué tan bien se ajusta el modelo?
+
+```{r}
+tR.lm <- lm(data = rail.db, formula = travel~Rail)
+plot(tR.lm)
+
+str(tR.lm)
+
+```
+
+```{r}
+
+ggplot(rail.db, aes(x = travel, y = Rail))+
+  geom_point()+
+  geom_smooth()
+?geom_smooth
+
+```
+Los efectos aleatorios se pueden muestrear. Siguen cierta frecuencia. 
+
+Demostrar que siguen una distribución de probabilidad. 
+
+
+```{r}
+library(Matrix)#Necesaria para cargar lme4
+library(lme4)
+
+r2.lme <- lmer(travel ~ 1+(1|Rail), REML = FALSE, data = rail.db)
+summary(r2.lme)
+
+#(1|Rail) Existe sólo un factor para 
+
+```
+
+El modelo se represe
+```{r}
+plot(r2.lme)
 ```
 
