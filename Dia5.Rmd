@@ -1,0 +1,155 @@
+---
+title: "Dia5(final)"
+author: "Diego Guerrero"
+date: "1/21/2022"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Ejercicio con covid 
+1. Leer datos 
+2. Graficar para los países: 
+  2.1 México 
+  2.2 Brazil 
+  2.3 España 
+  2.4 Estados Unidos 
+  2.5 Francia 
+
+```{r}
+#Contacto : diegoguerrero@comunidad.unam.mx
+library(tidyverse)
+covid.db <- as_tibble(read.csv("covid19.csv"))
+str(covid.db)
+  
+  top <- c("MX","ES","BR", "US","FR")
+  
+covid.top.tb$Date_reported <- as.Date(covid.top.tb$Date_reported)  
+covid.top.tb$Country_code <- as.factor(covid.top.tb$Country_code)
+covid.top.tb <- covid.db %>% filter(Country_code %in% top)
+
+#fecha(x), casos(y)
+ggplot(covid.top.tb)+
+  geom_line( aes(x = Date_reported, y = Cumulative_cases, color = Country_code))
+  
+  
+
+  
+```
+```{r}
+#Con nuevos datos 
+
+covid2.tb <- as.tibble(read_csv("covid2.csv"))
+
+str(covid2.tb)
+
+covid2.top.tb <- covid2.tb %>% filter(Country_code %in% top)
+
+covid2.top.tb$Date_reported <- as.Date(covid2.top.tb$Date_reported)
+
+ggplot(covid2.top.tb)+
+  geom_line(aes(x = Date_reported, y = Cumulative_cases, color = Country_code))
+
+
+
+```
+Nube de puntos. 
+Generar filtro de top 
+Grafico de puntos de lso  paises 
+
+
+```{r}
+covid2.tb$Country_code <- as.factor(covid2.tb$Country_code)
+
+?sort
+?filter
+filter(covid2.tb, )
+
+covid2.top.tb <- sort( x = rownames())
+
+covid2.top.tb <- sort(covid2.tb$Cumulative_cases, decreasing = T, index.return = TRUE)
+
+covid2.top.tb2 <- covid2.tb[covid2.top.tb$ix, ]
+
+covid2.top.tb <- as.tibble(covid2.top.tb)
+covid2.melt <- melt(covid2.tb, st.list)
+
+
+ggplot(covid2.tb, aes(x = Date_reported, y = Comulative_cases))+
+  geom_point()
+
+
+#Promedio  para sacar con más casos 
+
+
+
+```
+
+# transformaciones estadíssticas 
+
+Nuevo set de datos: 53,000 registros con 10 variables. Histogramas 
+
+
+
+```{r}
+diam.tb <- as.tibble(read_csv("diamonds.csv"))
+
+ggplot(data = diam.tb)+
+  geom_bar(mapping = aes(x = cut, fill = cut ))
+
+
+```
+```{r}
+ggplot(data = diam.tb)+
+  geom_bar(mapping = aes(x = cut, fill = clarity)) #Podemos visualizar dos variables en un histograma 
+
+ggplot(data= diam.tb)+
+  geom_bar(mapping = aes(x = cut, fill = clarity), position = "fill")
+```
+```{r}
+ggplot(data = diam.tb)+
+  geom_bar(mapping = aes(x = cut , fill = clarity), position = "Dodge")
+```
+Diferencias entre las geometrías 
+geom_bar: Valores discretos
+geom_histogram: Valores continuos 
+
+*Sólo en ggplot2
+
+
+```{r}
+ggplot(data = diam.tb, mapping = aes(x = carat, fill = color), position = "Dodge")+
+  geom_histogram()
+```
+
+```{r}
+#Cambiando ejes 
+
+coord_flip()
+```
+
+GGplot soporta muchos tiṕos de geometrías, más de 40. 
+# Exportando un grafico 
+
+```{r}
+n.vs.cut <- ggplot(data = diam.tb)+
+  geom_bar(mapping = aes(x = cut , fill = clarity), position = "Dodge")+
+  labs(
+    y = "Número de diamantes",
+    x = "Corte"
+    
+  )
+ggsave(filename ="numero_corte.svg",plot = n.vs.cut, width = 32, height = 18, dpi = 600, units = "cm") 
+
+```
+
+## Ejercicio 
+
+```{r}
+carat.plot <- ggplot(data = diam.tb, mapping = aes(x = carat, fill = color), position = "Dodge")+
+  geom_histogram()
+ggsave(filename =  "carat.plot.png", plot = carat.plot, width = 320, )
+```
+
